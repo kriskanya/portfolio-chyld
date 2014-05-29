@@ -3,6 +3,8 @@
 var multiparty = require('multiparty');
 var traceur = require('traceur');
 var Project = traceur.require(__dirname + '/../models/project.js');
+var projects = global.nss.db.collection('projects');
+// var Mongo = require('mongodb');
 
 exports.index = (req, res)=>{
   Project.findAll(projects=>{
@@ -27,5 +29,23 @@ exports.create = (req, res)=>{
 exports.show = (req, res)=>{
   Project.findById(req.params.id, project=>{
     res.render('projects/show', {project:project, title: 'Portfolio: Show'});
+  });
+};
+
+exports.destroy = (req, res)=>{
+  Project.findById(req.params.id, project=>{
+    Project.destroy(project);
+
+    res.redirect('/projects');
+  });
+};
+
+exports.edit = (req, res)=>{
+  Project.findById(req.params.id, project=>{
+    console.log(project);
+    Project.modify(project, req.body);
+      projects.save(project, ()=>{
+        res.redirect('/projects');
+    });
   });
 };

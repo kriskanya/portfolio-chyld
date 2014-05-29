@@ -6,6 +6,7 @@ var projects = global.nss.db.collection('projects');
 var fs = require('fs');
 var path = require('path');
 var Mongo = require('mongodb');
+var rimraf = require('rimraf');
 
 class Project{
   static create(userId, fields, files, fn){
@@ -20,6 +21,17 @@ class Project{
     project.photos = [];
     project.processPhotos(files.photos);
     projects.save(project, (e,p)=>fn(p));
+  }
+
+  static modify(original, obj){
+    original.title = obj.title;
+    original.description = obj.description;
+    original.tags = obj.tags;
+    original.git = obj.git;
+    original.app = obj.app;
+    original.date = obj.date;
+    // projects.save(project, (e,p)=>fn(p));
+
   }
 
   processPhotos(photos){
@@ -37,6 +49,16 @@ class Project{
 
       fs.renameSync(p.path, fullDir);
     });
+  }
+
+  save(fn){
+    projects.save(this, ()=>fn(this));
+  }
+
+  static destroy(obj){
+    var _id = Mongo.ObjectID(obj._id);
+    projects.findAndRemove({_id: _id}, ()=>{});
+      rimraf(`${__dirname}/../static/img/${obj.userId}/${obj.title}`, ()=>{});
   }
 
   static findAll(fn){

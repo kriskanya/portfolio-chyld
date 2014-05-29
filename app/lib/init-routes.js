@@ -34,6 +34,8 @@ function load(app, fn){
   app.post('/projects', dbg, projects.create);
   app.get('/projects/new', dbg, projects.new);
   app.get('/projects/:id', dbg, projects.show);
+  app.post('/projects/:id', dbg, projects.edit);
+  app.post('/projects/:id/delete', dbg, projects.destroy);
 
   console.log('Routes Loaded');
   fn();

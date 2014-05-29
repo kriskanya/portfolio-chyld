@@ -14,3 +14,21 @@ block content
         ul
           li: a(href=project.git) Github
           li: a(href=project.app) Amazon EC2
+        .delete
+          form(action='/projects/#{project._id}/delete', method='POST')
+            button Delete
+
+        button#editButton Edit
+        form.editForm(action='/projects/#{project._id}', method='post')
+          input(type='text', name='title', placeholder='Title')
+          textarea(name='description', placeholder='Description')
+          input(type='text', name='tags', placeholder='Tags')
+          input(type='text', name='git', placeholder='Git Url')
+          input(type='text', name='app', placeholder='App Url')
+          input(type='date', name='date')
+          button#submitEdit Submit Edit
+
+
+
+block scripts
+  script(src='/js/es6/compiled/projects.js')
