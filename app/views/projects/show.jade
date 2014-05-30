@@ -6,6 +6,11 @@ block content
   .project
     h1: a(href='/projects/#{project._id}')= project.title
     h2 #{project.photos.length} Photos
+    each photo, index in project.photos
+      img(src='#{photo}')
+      form.deletePic(action='/projects/#{project._id}/#{index}', method='post')
+        h1= index
+        button Delete Photo
     h2= project.description
     h2= project.date
     h2= project.tags

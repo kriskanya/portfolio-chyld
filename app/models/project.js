@@ -61,6 +61,13 @@ class Project{
       rimraf(`${__dirname}/../static/img/${obj.userId}/${obj.title}`, ()=>{});
   }
 
+  static deletePhoto(obj, index){
+    var _id = Mongo.ObjectID(obj._id);
+    var photos = obj.photos[index];
+    projects.findAndRemove({photos: photos}, ()=>{});
+      fs.unlinkSync(`${__dirname}/../static/img/${obj.userId}/${obj.photos}/${index}.jpg`, ()=>{});
+  }
+
   static findAll(fn){
     projects.find().toArray((e,r)=>fn(r));
   }

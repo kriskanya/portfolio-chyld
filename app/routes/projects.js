@@ -40,9 +40,18 @@ exports.destroy = (req, res)=>{
   });
 };
 
+exports.destroyPhoto = (req, res)=>{
+  console.log('cccccccccc');
+  console.log(req.param.index);
+  Project.findById(req.params.id, project=>{
+    Project.deletePhoto(project, req.params.index);
+
+    res.redirect('/projects');
+  });
+};
+
 exports.edit = (req, res)=>{
   Project.findById(req.params.id, project=>{
-    console.log(project);
     Project.modify(project, req.body);
       projects.save(project, ()=>{
         res.redirect('/projects');

@@ -30,12 +30,15 @@ function load(app, fn){
   app.post('/login', dbg, users.authenticate);
   app.get('/logout', dbg, users.logout);
 
+  app.all('*', users.bounce);  //when it gets to this route, if you're not logged in it kicks you out
+
   app.get('/projects', dbg, projects.index);
   app.post('/projects', dbg, projects.create);
   app.get('/projects/new', dbg, projects.new);
   app.get('/projects/:id', dbg, projects.show);
   app.post('/projects/:id', dbg, projects.edit);
   app.post('/projects/:id/delete', dbg, projects.destroy);
+  app.post('/projects/:id/:index', dbg, projects.destroyPhoto);
 
   console.log('Routes Loaded');
   fn();
